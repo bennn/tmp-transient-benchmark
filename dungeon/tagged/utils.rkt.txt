@@ -1,0 +1,1029 @@
+(module utils typed/racket/base
+  (#%module-begin
+   (module configure-runtime '#%kernel
+     (#%module-begin (#%require racket/runtime-config) (#%app configure '#f)))
+   (#%require (submod typed-racket/private/type-contract predicates))
+   (#%require typed-racket/utils/utils)
+   (#%require (for-meta 1 typed-racket/utils/utils))
+   (#%require typed-racket/utils/any-wrap)
+   (#%require typed-racket/utils/struct-type-c)
+   (#%require typed-racket/utils/prefab-c)
+   (#%require typed-racket/utils/opaque-object)
+   (#%require typed-racket/utils/evt-contract)
+   (#%require typed-racket/utils/hash-contract)
+   (#%require typed-racket/utils/vector-contract)
+   (#%require typed-racket/utils/sealing-contract)
+   (#%require typed-racket/utils/promise-not-name-contract)
+   (#%require typed-racket/utils/simple-result-arrow)
+   (#%require racket/sequence)
+   (#%require racket/contract/parametric)
+   (begin-for-syntax
+    (module*
+     #%type-decl
+     #f
+     (#%plain-module-begin
+      (#%declare #:empty-namespace)
+      (#%require typed-racket/types/numeric-tower)
+      (#%require typed-racket/env/type-name-env)
+      (#%require typed-racket/env/global-env)
+      (#%require typed-racket/env/type-alias-env)
+      (#%require typed-racket/types/struct-table)
+      (#%require typed-racket/types/abbrev)
+      (#%require
+       (just-meta 0 (rename racket/private/sort raw-sort sort))
+       (just-meta 0 (rename racket/private/sort vector-sort! vector-sort!))
+       (just-meta 0 (rename racket/private/sort vector-sort vector-sort))
+       (only racket/private/sort))
+      (#%app
+       register-type
+       (t-quote-syntax article)
+       (#%app
+        make-Fun
+        (#%app
+         list
+         (#%app
+          make-Arrow
+          (#%app list -Boolean -Boolean)
+          '#f
+          (#%app list (#%app make-Keyword '#:an? -Boolean '#f))
+          (#%app make-Values (#%app list (#%app -result -String)))))))
+      (#%app
+       register-type
+       (t-quote-syntax d20)
+       (#%app simple-> (#%app list) -Int))
+      (#%app
+       register-type
+       (t-quote-syntax d6)
+       (#%app simple-> (#%app list) -Int))
+      (#%app register-type (t-quote-syntax orig) (#%app -lst -Nat))
+      (#%app
+       register-type
+       (t-quote-syntax r*)
+       (#%app make-Box (#%app -lst -Nat)))
+      (#%app
+       register-type
+       (t-quote-syntax random)
+       (#%app simple-> (#%app list -Int) -Nat))
+      (#%app
+       register-type
+       (t-quote-syntax random-between)
+       (#%app simple-> (#%app list -Int -Int) -Int))
+      (#%app
+       register-type
+       (t-quote-syntax random-from)
+       (let-values (((temp1) (#%app list 'A))
+                    ((temp2)
+                     (#%app
+                      simple->
+                      (#%app list (#%app -lst (#%app make-F 'A)))
+                      (#%app make-F 'A))))
+         (if (#%app
+              variable-reference-constant?
+              (#%variable-reference Poly*178))
+           (#%app Poly* unsafe-undefined temp1 temp2)
+           (#%app Poly*178 temp1 temp2))))
+      (#%app
+       register-type
+       (t-quote-syntax reset!)
+       (#%app simple-> (#%app list) -Void))
+      (#%app
+       register-type
+       (t-quote-syntax shuffle)
+       (let-values (((temp3) (#%app list 'A))
+                    ((temp4)
+                     (#%app
+                      simple->
+                      (#%app list (#%app -lst (#%app make-F 'A)))
+                      (#%app -lst (#%app make-F 'A)))))
+         (if (#%app
+              variable-reference-constant?
+              (#%variable-reference Poly*178))
+           (#%app Poly* unsafe-undefined temp3 temp4)
+           (#%app Poly*178 temp3 temp4))))
+      (#%app
+       register-type
+       (t-quote-syntax article)
+       (#%app
+        make-Fun
+        (#%app
+         list
+         (#%app
+          make-Arrow
+          (#%app list -Boolean -Boolean)
+          '#f
+          (#%app list (#%app make-Keyword '#:an? -Boolean '#f))
+          (#%app make-Values (#%app list (#%app -result -String)))))))
+      (#%app
+       register-type
+       (t-quote-syntax d20)
+       (#%app simple-> (#%app list) -Int))
+      (#%app
+       register-type
+       (t-quote-syntax d6)
+       (#%app simple-> (#%app list) -Int))
+      (#%app
+       register-type
+       (t-quote-syntax random)
+       (#%app simple-> (#%app list -Int) -Nat))
+      (#%app
+       register-type
+       (t-quote-syntax random-between)
+       (#%app simple-> (#%app list -Int -Int) -Int))
+      (#%app
+       register-type
+       (t-quote-syntax random-from)
+       (let-values (((temp5) (#%app list 'A))
+                    ((temp6)
+                     (#%app
+                      simple->
+                      (#%app list (#%app -lst (#%app make-F 'A)))
+                      (#%app make-F 'A))))
+         (if (#%app
+              variable-reference-constant?
+              (#%variable-reference Poly*178))
+           (#%app Poly* unsafe-undefined temp5 temp6)
+           (#%app Poly*178 temp5 temp6))))
+      (#%app
+       register-type
+       (t-quote-syntax reset!)
+       (#%app simple-> (#%app list) -Void)))))
+   (begin-for-syntax
+    (#%app
+     add-mod!
+     (#%app variable-reference->module-path-index (#%variable-reference))))
+   (define-values
+    (blame5)
+    (#%app
+     module-name-fixup
+     (#%app variable-reference->module-source/submod (#%variable-reference))
+     (#%app list)))
+   (begin-for-syntax
+    (#%require typed-racket/utils/redirect-contract)
+    (module #%contract-defs-reference racket/base
+      (#%module-begin
+       (module configure-runtime '#%kernel
+         (#%module-begin
+          (#%require racket/runtime-config)
+          (#%app configure '#f)))
+       (#%require racket/runtime-path)
+       (#%require (for-meta 1 racket/base))
+       (define-values
+        (contract-defs-submod)
+        (let-values (((contract-defs-submod)
+                      (let-values (((runtime?) '#t))
+                        (#%app
+                         list
+                         'module
+                         '(submod ".." #%contract-defs)
+                         (#%variable-reference)))))
+          (let-values (((get-dir) void))
+            (#%app
+             apply
+             values
+             (#%app
+              resolve-paths
+              (#%variable-reference)
+              get-dir
+              (#%app list contract-defs-submod))))))
+       (begin-for-syntax
+        (#%app
+         register-ext-files
+         (#%variable-reference)
+         (let-values (((contract-defs-submod)
+                       (let-values (((runtime?) '#f))
+                         (#%app
+                          list
+                          'module
+                          '(submod ".." #%contract-defs)
+                          (#%variable-reference)))))
+           (#%app list contract-defs-submod))))
+       (#%provide contract-defs-submod)))
+    (#%require (submod "." #%contract-defs-reference))
+    (define-values
+     (make-redirect6)
+     (#%app make-make-redirect-to-contract contract-defs-submod)))
+   (module*
+    #%contract-defs
+    #f
+    (#%plain-module-begin
+     (#%declare #:empty-namespace)
+     (#%require (submod typed-racket/private/type-contract predicates))
+     (#%require typed-racket/utils/utils)
+     (#%require (for-meta 1 typed-racket/utils/utils))
+     (#%require typed-racket/utils/any-wrap)
+     (#%require typed-racket/utils/struct-type-c)
+     (#%require typed-racket/utils/prefab-c)
+     (#%require typed-racket/utils/opaque-object)
+     (#%require typed-racket/utils/evt-contract)
+     (#%require typed-racket/utils/hash-contract)
+     (#%require typed-racket/utils/vector-contract)
+     (#%require typed-racket/utils/sealing-contract)
+     (#%require typed-racket/utils/promise-not-name-contract)
+     (#%require typed-racket/utils/simple-result-arrow)
+     (#%require racket/sequence)
+     (#%require racket/contract/parametric)
+     (define-values (generated-contract7) any/c/proc)
+     (define-values
+      (idZ3)
+      (let-values (((article)
+                    (#%app
+                     coerce-contract
+                     'define-module-boundary-contract
+                     generated-contract7)))
+        article))
+     (define-syntaxes
+      (article)
+      (#%app
+       make-provide/contract-transformer
+       (quote-syntax article)
+       (quote-syntax idZ3)
+       (quote-syntax article)
+       '#f
+       '#f
+       (quote-syntax idX1)
+       (quote-syntax idB4)))
+     (#%provide article)
+     (define-values (generated-contract8) any/c/proc)
+     (define-values
+      (idZ7)
+      (let-values (((d20)
+                    (#%app
+                     coerce-contract
+                     'define-module-boundary-contract
+                     generated-contract8)))
+        d20))
+     (define-syntaxes
+      (d20)
+      (#%app
+       make-provide/contract-transformer
+       (quote-syntax d20)
+       (quote-syntax idZ7)
+       (quote-syntax d20)
+       '#f
+       '#f
+       (quote-syntax idX5)
+       (quote-syntax idB8)))
+     (#%provide d20)
+     (define-values (generated-contract9) any/c/proc)
+     (define-values
+      (idZ11)
+      (let-values (((d6)
+                    (#%app
+                     coerce-contract
+                     'define-module-boundary-contract
+                     generated-contract9)))
+        d6))
+     (define-syntaxes
+      (d6)
+      (#%app
+       make-provide/contract-transformer
+       (quote-syntax d6)
+       (quote-syntax idZ11)
+       (quote-syntax d6)
+       '#f
+       '#f
+       (quote-syntax idX9)
+       (quote-syntax idB12)))
+     (#%provide d6)
+     (define-values (generated-contract10) any/c/proc)
+     (define-values
+      (idZ15)
+      (let-values (((random)
+                    (#%app
+                     coerce-contract
+                     'define-module-boundary-contract
+                     generated-contract10)))
+        random))
+     (define-syntaxes
+      (random)
+      (#%app
+       make-provide/contract-transformer
+       (quote-syntax random)
+       (quote-syntax idZ15)
+       (quote-syntax random)
+       '#f
+       '#f
+       (quote-syntax idX13)
+       (quote-syntax idB16)))
+     (#%provide random)
+     (define-values (generated-contract11) any/c/proc)
+     (define-values
+      (idZ19)
+      (let-values (((random-between)
+                    (#%app
+                     coerce-contract
+                     'define-module-boundary-contract
+                     generated-contract11)))
+        random-between))
+     (define-syntaxes
+      (random-between)
+      (#%app
+       make-provide/contract-transformer
+       (quote-syntax random-between)
+       (quote-syntax idZ19)
+       (quote-syntax random-between)
+       '#f
+       '#f
+       (quote-syntax idX17)
+       (quote-syntax idB20)))
+     (#%provide random-between)
+     (define-values (generated-contract12) any/c/proc)
+     (define-values
+      (idZ23)
+      (let-values (((random-from)
+                    (#%app
+                     coerce-contract
+                     'define-module-boundary-contract
+                     generated-contract12)))
+        random-from))
+     (define-syntaxes
+      (random-from)
+      (#%app
+       make-provide/contract-transformer
+       (quote-syntax random-from)
+       (quote-syntax idZ23)
+       (quote-syntax random-from)
+       '#f
+       '#f
+       (quote-syntax idX21)
+       (quote-syntax idB24)))
+     (#%provide random-from)
+     (define-values (generated-contract13) any/c/proc)
+     (define-values
+      (idZ27)
+      (let-values (((reset!)
+                    (#%app
+                     coerce-contract
+                     'define-module-boundary-contract
+                     generated-contract13)))
+        reset!))
+     (define-syntaxes
+      (reset!)
+      (#%app
+       make-provide/contract-transformer
+       (quote-syntax reset!)
+       (quote-syntax idZ27)
+       (quote-syntax reset!)
+       '#f
+       '#f
+       (quote-syntax idX25)
+       (quote-syntax idB28)))
+     (#%provide reset!)
+     (define-values
+      (idX1 idB4)
+      (#%app
+       do-partial-app
+       idZ3
+       article
+       'article
+       blame5
+       (#%app
+        vector
+        '#<path:/Users/ben/code/racket/gtp/transient-tr-benchmark/dungeon/tagged/utils.rkt>
+        '4
+        '2
+        '49
+        '7)
+       '#f))
+     (define-values
+      (idX5 idB8)
+      (#%app
+       do-partial-app
+       idZ7
+       d20
+       'd20
+       blame5
+       (#%app
+        vector
+        '#<path:/Users/ben/code/racket/gtp/transient-tr-benchmark/dungeon/tagged/utils.rkt>
+        '7
+        '2
+        '81
+        '3)
+       '#f))
+     (define-values
+      (idX9 idB12)
+      (#%app
+       do-partial-app
+       idZ11
+       d6
+       'd6
+       blame5
+       (#%app
+        vector
+        '#<path:/Users/ben/code/racket/gtp/transient-tr-benchmark/dungeon/tagged/utils.rkt>
+        '6
+        '2
+        '76
+        '2)
+       '#f))
+     (define-values
+      (idX13 idB16)
+      (#%app
+       do-partial-app
+       idZ15
+       random
+       'random
+       blame5
+       (#%app
+        vector
+        '#<path:/Users/ben/code/racket/gtp/transient-tr-benchmark/dungeon/tagged/utils.rkt>
+        '9
+        '2
+        '101
+        '6)
+       '#f))
+     (define-values
+      (idX17 idB20)
+      (#%app
+       do-partial-app
+       idZ19
+       random-between
+       'random-between
+       blame5
+       (#%app
+        vector
+        '#<path:/Users/ben/code/racket/gtp/transient-tr-benchmark/dungeon/tagged/utils.rkt>
+        '5
+        '2
+        '59
+        '14)
+       '#f))
+     (define-values
+      (idX21 idB24)
+      (#%app
+       do-partial-app
+       idZ23
+       random-from
+       'random-from
+       blame5
+       (#%app
+        vector
+        '#<path:/Users/ben/code/racket/gtp/transient-tr-benchmark/dungeon/tagged/utils.rkt>
+        '8
+        '2
+        '87
+        '11)
+       '#f))
+     (define-values
+      (idX25 idB28)
+      (#%app
+       do-partial-app
+       idZ27
+       reset!
+       'reset!
+       blame5
+       (#%app
+        vector
+        '#<path:/Users/ben/code/racket/gtp/transient-tr-benchmark/dungeon/tagged/utils.rkt>
+        '10
+        '2
+        '110
+        '6)
+       '#f))))
+   (#%require
+    (just-meta 0 (rename racket/list first first))
+    (only racket/list))
+   (#%require
+    (just-meta 0 (rename racket/file file->value file->value))
+    (only racket/file))
+   (define-values
+    ()
+    (begin
+      (quote-syntax (:-internal orig (Listof Natural)) #:local)
+      (#%plain-app values)))
+   (define-values
+    (orig)
+    '(2
+      10
+      24
+      3
+      0
+      2
+      10
+      45
+      2
+      2
+      2
+      2
+      49
+      3
+      1
+      5
+      1
+      0
+      0
+      2
+      1
+      0
+      2
+      1
+      0
+      0
+      2
+      2
+      5
+      0
+      0
+      0
+      3
+      0
+      1
+      2
+      0
+      3
+      0
+      0
+      2
+      2
+      0
+      2
+      2
+      0
+      0
+      3
+      0
+      0
+      2
+      0
+      3
+      1
+      0
+      2
+      0
+      0
+      1
+      1
+      0
+      2
+      0
+      0
+      3
+      0
+      0
+      1
+      2
+      0
+      3
+      1
+      0
+      2
+      0
+      0
+      0
+      1
+      3
+      1
+      1
+      0
+      1
+      2
+      0
+      3
+      2
+      0
+      1
+      2
+      0
+      1
+      1
+      0
+      2
+      2
+      0
+      1
+      1
+      0
+      2
+      2
+      0
+      0
+      0
+      2
+      1
+      0
+      0
+      0
+      0
+      3
+      4
+      0
+      0
+      2
+      1
+      0
+      2
+      1
+      0
+      3
+      1
+      0
+      1
+      0
+      0
+      1
+      0
+      0
+      1
+      2
+      0
+      1
+      0
+      0
+      2
+      2
+      0
+      2
+      2
+      0
+      3
+      1
+      0
+      1
+      0
+      0
+      1
+      1
+      0
+      2
+      1
+      0
+      3
+      2
+      0
+      3
+      0
+      0
+      2
+      2
+      0
+      0
+      0
+      3
+      4
+      2
+      0
+      3
+      0
+      0
+      3
+      1
+      0
+      0
+      3
+      0
+      4
+      0
+      0
+      2
+      0
+      0
+      2
+      2
+      0
+      2
+      1
+      0
+      0
+      0
+      3
+      6
+      1
+      0
+      3
+      0
+      0
+      0
+      2
+      1
+      3
+      0
+      0
+      3
+      1
+      0
+      1
+      1
+      0
+      2
+      0
+      0
+      3
+      2
+      0
+      2
+      1
+      0
+      1
+      2
+      0
+      0
+      3
+      0
+      2
+      2
+      0
+      2
+      2
+      0
+      2
+      2
+      0
+      1
+      1
+      0
+      3
+      1
+      0
+      2
+      1
+      0
+      1
+      2
+      0
+      0
+      2
+      0
+      3
+      1
+      0
+      1
+      1
+      0
+      2
+      2
+      0
+      2
+      2
+      0
+      1
+      5
+      3
+      3
+      2
+      1))
+   (define-values
+    ()
+    (begin
+      (quote-syntax (:-internal r* (Boxof (Listof Natural))) #:local)
+      (#%plain-app values)))
+   (define-values (r*) (#%app box orig))
+   (define-values
+    ()
+    (begin
+      (quote-syntax (:-internal reset! (-> Void)) #:local)
+      (#%plain-app values)))
+   (define-values (reset!) (lambda () (#%app set-box! r* orig)))
+   (define-values
+    ()
+    (begin
+      (quote-syntax (:-internal random (-> Integer Natural)) #:local)
+      (#%plain-app values)))
+   (define-values
+    (random)
+    (lambda (n)
+      (#%plain-app
+       void
+       (if (#%plain-app exact-integer? n)
+         (#%app void)
+         (let-values ()
+           (#%plain-app
+            error
+            'transient-assert
+            (#%plain-app format '"got ~s in ~a" n '"'n : Integer")))))
+      (begin0
+        (let-values (((dyn-cod24)
+                      (#%app
+                       car
+                       (let-values (((dyn-cod22) (#%app unbox r*)))
+                         (if (#%plain-app list? dyn-cod22)
+                           dyn-cod22
+                           (#%plain-app
+                            error
+                            'transient-assert
+                            (#%plain-app
+                             format
+                             '"got ~s in ~a"
+                             dyn-cod22
+                             '"'(#%app unbox r*)... : ((Listof Nonnegative-Integer))")))))))
+          (if (#%plain-app exact-nonnegative-integer? dyn-cod24)
+            dyn-cod24
+            (#%plain-app
+             error
+             'transient-assert
+             (#%plain-app
+              format
+              '"got ~s in ~a"
+              dyn-cod24
+              '"'(#%app car (let-... : (Nonnegative-Integer)"))))
+        (#%app
+         set-box!
+         r*
+         (#%app
+          cdr
+          (let-values (((dyn-cod26) (#%app unbox r*)))
+            (if (#%plain-app list? dyn-cod26)
+              dyn-cod26
+              (#%plain-app
+               error
+               'transient-assert
+               (#%plain-app
+                format
+                '"got ~s in ~a"
+                dyn-cod26
+                '"'(#%app unbox r*)... : ((Listof Nonnegative-Integer))")))))))))
+   (define-values
+    ()
+    (begin
+      (quote-syntax
+       (:-internal article (->* (Boolean Boolean) (#:an? Boolean) String))
+       #:local)
+      (#%plain-app values)))
+   (define-values
+    (article)
+    (let-values (((article)
+                  (lambda (an?1 capitalize?3 specific?4)
+                    (let-values (((capitalize?) capitalize?3))
+                      (let-values (((specific?) specific?4))
+                        (let-values (((an?) (if '#f '#f an?1)))
+                          (let-values ()
+                            (if specific?
+                              (if capitalize? '"The" '"the")
+                              (if an?
+                                (if capitalize? '"An" '"an")
+                                (if capitalize? '"A" '"a"))))))))))
+      (let-values (((article)
+                    (lambda (given-kws given-args capitalize?3 specific?4)
+                      (let-values (((an?2) (#%app pair? given-kws)))
+                        (let-values (((an?1)
+                                      (if an?2 (#%app car given-args) '#f)))
+                          (#%app article an?1 capitalize?3 specific?4))))))
+        (#%app
+         make-optional-keyword-procedure
+         (lambda (given-kws given-argc)
+           (if (#%app = given-argc '4)
+             (let-values (((l1) given-kws))
+               (let-values (((l1)
+                             (if (#%app null? l1)
+                               l1
+                               (if (#%app eq? (#%app car l1) '#:an?)
+                                 (#%app cdr l1)
+                                 l1))))
+                 (#%app null? l1)))
+             '#f))
+         (case-lambda
+          ((given-kws given-args capitalize? specific?)
+           (#%app article given-kws given-args capitalize? specific?)))
+         null
+         '(#:an?)
+         (case-lambda
+          ((capitalize? specific?)
+           (#%app article null null capitalize? specific?)))))))
+   (define-values
+    ()
+    (begin
+      (quote-syntax
+       (:-internal random-between (-> Integer Integer Integer))
+       #:local)
+      (#%plain-app values)))
+   (define-values
+    (random-between)
+    (lambda (min max)
+      (#%plain-app
+       void
+       (if (#%plain-app exact-integer? min)
+         (#%app void)
+         (let-values ()
+           (#%plain-app
+            error
+            'transient-assert
+            (#%plain-app format '"got ~s in ~a" min '"'min : Integer"))))
+       (if (#%plain-app exact-integer? max)
+         (#%app void)
+         (let-values ()
+           (#%plain-app
+            error
+            'transient-assert
+            (#%plain-app format '"got ~s in ~a" max '"'max : Integer")))))
+      (#%app + min (#%app random (#%app - max min)))))
+   (define-values
+    ()
+    (begin
+      (quote-syntax (:-internal d6 (-> Integer)) #:local)
+      (#%plain-app values)))
+   (define-values (d6) (lambda () (#%app random-between '1 '7)))
+   (define-values
+    ()
+    (begin
+      (quote-syntax (:-internal d20 (-> Integer)) #:local)
+      (#%plain-app values)))
+   (define-values (d20) (lambda () (#%app random-between '1 '21)))
+   (define-values
+    ()
+    (begin
+      (quote-syntax
+       (:-internal random-from (All (A) (-> (Listof A) A)))
+       #:local)
+      (#%plain-app values)))
+   (define-values
+    (random-from)
+    (lambda (l)
+      (#%plain-app
+       void
+       (if (#%plain-app list? l)
+         (#%app void)
+         (let-values ()
+           (#%plain-app
+            error
+            'transient-assert
+            (#%plain-app format '"got ~s in ~a" l '"'l : (Listof g1934)")))))
+      (#%app first (#%app shuffle l))))
+   (define-values
+    ()
+    (begin
+      (quote-syntax
+       (:-internal shuffle (All (A) (-> (Listof A) (Listof A))))
+       #:local)
+      (#%plain-app values)))
+   (define-values
+    (shuffle)
+    (lambda (l)
+      (#%plain-app
+       void
+       (if (#%plain-app list? l)
+         (#%app void)
+         (let-values ()
+           (#%plain-app
+            error
+            'transient-assert
+            (#%plain-app format '"got ~s in ~a" l '"'l : (Listof g1937)")))))
+      (#%app reverse l)))
+   (define-syntaxes (article) (#%app make-redirect6 (quote-syntax article)))
+   (define-syntaxes
+    (article)
+    (#%app
+     make-typed-renaming
+     (t-quote-syntax article)
+     (t-quote-syntax article)
+     'transient))
+   (define-syntaxes (d20) (#%app make-redirect6 (quote-syntax d20)))
+   (define-syntaxes
+    (d20)
+    (#%app
+     make-typed-renaming
+     (t-quote-syntax d20)
+     (t-quote-syntax d20)
+     'transient))
+   (define-syntaxes (d6) (#%app make-redirect6 (quote-syntax d6)))
+   (define-syntaxes
+    (d6)
+    (#%app
+     make-typed-renaming
+     (t-quote-syntax d6)
+     (t-quote-syntax d6)
+     'transient))
+   (define-syntaxes (random) (#%app make-redirect6 (quote-syntax random)))
+   (define-syntaxes
+    (random)
+    (#%app
+     make-typed-renaming
+     (t-quote-syntax random)
+     (t-quote-syntax random)
+     'transient))
+   (define-syntaxes
+    (random-between)
+    (#%app make-redirect6 (quote-syntax random-between)))
+   (define-syntaxes
+    (random-between)
+    (#%app
+     make-typed-renaming
+     (t-quote-syntax random-between)
+     (t-quote-syntax random-between)
+     'transient))
+   (define-syntaxes
+    (random-from)
+    (#%app make-redirect6 (quote-syntax random-from)))
+   (define-syntaxes
+    (random-from)
+    (#%app
+     make-typed-renaming
+     (t-quote-syntax random-from)
+     (t-quote-syntax random-from)
+     'transient))
+   (define-syntaxes (reset!) (#%app make-redirect6 (quote-syntax reset!)))
+   (define-syntaxes
+    (reset!)
+    (#%app
+     make-typed-renaming
+     (t-quote-syntax reset!)
+     (t-quote-syntax reset!)
+     'transient))
+   (#%provide article)
+   (#%provide d20)
+   (#%provide d6)
+   (#%provide random)
+   (#%provide random-between)
+   (#%provide random-from)
+   (#%provide reset!)
+   (#%provide)
+   (#%app void)))
