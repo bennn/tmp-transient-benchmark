@@ -9,7 +9,7 @@
 
 (require require-typed-check
          (only-in racket/string string-split string-join string-trim)
-         "../base/tagged-zo-structs.rkt"
+         "../base/typed-zo-structs.rkt"
          racket/match)
 
 (require/typed/check "zo-string.rkt"

@@ -13,7 +13,7 @@
 (require (only-in racket/list empty?)
          (only-in racket/string string-split string-trim)
          require-typed-check
-         "../base/tagged-zo-structs.rkt"
+         "../base/typed-zo-structs.rkt"
          racket/match)
 
 (require/typed/check "zo-transition.rkt"
