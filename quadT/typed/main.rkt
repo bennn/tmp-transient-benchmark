@@ -7,7 +7,6 @@
 (require
  require-typed-check
  "../base/core-types.rkt"
- "../base/macro-t.rkt"
  "../base/quad-types.rkt"
  (only-in typed/racket/class new send)
 )

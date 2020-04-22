@@ -1,8 +1,11 @@
 #lang typed/racket/base
 
 (provide
- (all-defined-out)
+ (except-out (all-defined-out) quad)
  (all-from-out typed/racket/draw))
+
+(require (only-in typed/racket/unsafe unsafe-provide))
+(unsafe-provide quad)
 
 ;; -----------------------------------------------------------------------------
 
@@ -55,6 +58,12 @@
 (define-type GroupQuad (List* QuadName QuadAttrs GroupQuadList))
 (define-predicate GroupQuad? GroupQuad)
 (define-predicate quad? Quad)
+
+;; quad wants to be generic
+;; if it's a function, it must impose a type on its output value
+;; whereas if it's syntax, it can avoid demanding or imposing any typing
+(define-syntax-rule (quad name attrs items)
+  (list* name attrs items))
 
 (define-type QuadSet (List QuadName QuadAttrs (Listof Quad)))
 (define-predicate QuadSet? QuadSet)

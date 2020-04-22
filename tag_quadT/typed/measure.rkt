@@ -13,7 +13,6 @@
 (require
  require-typed-check
  "../base/core-types.rkt"
- "../base/macro-s.rkt"
  (only-in typed/racket/class new send)
  (only-in math/flonum fl)
  (only-in racket/file write-to-file file->value)

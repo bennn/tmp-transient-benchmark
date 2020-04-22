@@ -9,7 +9,6 @@
   racket/file
   (only-in racket/include include)
   "../base/core-types.rkt"
-  "../base/macro-s.rkt"
   "../base/quad-types.rkt"
 )
 (require/typed/check "quads.rkt"
