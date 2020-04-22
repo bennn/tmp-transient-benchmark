@@ -4,6 +4,7 @@
 
 (require
  require-typed-check
+ "../base/quad-types.rkt"
  (only-in typed/racket/class new send))
 
 (require (only-in "world.rkt"

@@ -25,7 +25,7 @@
 
 ;(define (quad-attrs? xs)
 ;  (and (list? xs)
-;       (for/and : Boolean ([x xs])
+;       (for/and ([x xs])
 ;         (and (pair? x) (symbol? (car x))))))
 (define-type QuadAttrs (Listof (Pairof Symbol Any)))
 (define-predicate quad-attrs? QuadAttrs)
