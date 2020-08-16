@@ -32,7 +32,6 @@
   round-float ;(-> Float Float)]
 ))
 (require (only-in "quads.rkt"
-  quad? quad
   optical-kern ;(->* ((Listof Any)) () #:rest USQ Quad))
   line ;(->* ((Listof Any)) () #:rest USQ Quad)]
   optical-kern? ;(-> Any Boolean)]
